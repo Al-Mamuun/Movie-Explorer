@@ -13,7 +13,10 @@ A responsive movie browsing website with a dark theme, search functionality, and
 
 ## 📸 Preview
 
-*(Add a screenshot or GIF of your site here once it's live)*
+<img width="1919" height="996" alt="Screenshot_1" src="https://github.com/user-attachments/assets/c74f2a32-c9dd-4b7a-9d31-19cffe96a10b" />
+<img width="1919" height="990" alt="Screenshot_2" src="https://github.com/user-attachments/assets/a06e7194-6302-4b10-8ee7-297969b1eac7" />
+
+
 
 ## 🛠️ Tech Stack
 
@@ -71,7 +74,7 @@ The site will open automatically at `http://localhost:3000`.
 ### 4. Build for production (optional)
 
 ```bash
-npm run build
+npm run dev
 ```
 
 This creates an optimized production build inside the `build/` folder.
