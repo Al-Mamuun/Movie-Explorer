@@ -16,7 +16,6 @@ function Hero() {
 
         <Link to="/movies" className="hero-btn">
           <span>Explore Now</span>
-          <Film size={20} strokeWidth={2} aria-hidden="true" />
         </Link>
       </div>
     </section>

@@ -4,6 +4,7 @@ import Navbar from "./components/navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Movies from "./pages/Movies";
+import "./icon-improvements.css";
 
 function App() {
   return (
