@@ -1,3 +1,4 @@
+import { Film } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function Hero() {
@@ -14,7 +15,8 @@ function Hero() {
         </p>
 
         <Link to="/movies" className="hero-btn">
-          Explore Now 🎬
+          <span>Explore Now</span>
+          <Film size={20} strokeWidth={2} aria-hidden="true" />
         </Link>
       </div>
     </section>

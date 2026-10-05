@@ -1,0 +1,46 @@
+/* Add these rules near the existing component styles. */
+.brand-heading,
+.logo,
+.hero-btn,
+.search-box button,
+.movie-meta span,
+.genre-list {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  color: white;
+  text-decoration: none;
+}
+
+.movie-meta span,
+.genre-list {
+  gap: 6px;
+}
+
+.error-message,
+.empty-message {
+  max-width: 750px;
+  margin: 40px auto;
+  color: #fca5a5;
+  text-align: center;
+  font-size: 18px;
+}
+
+.empty-message {
+  color: #9ca3af;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

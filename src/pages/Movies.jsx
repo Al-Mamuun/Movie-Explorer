@@ -1,84 +1,92 @@
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 import MovieModal from "../components/MovieModal";
 
+const SHOWS_ENDPOINT = "https://api.tvmaze.com/shows";
+
 function Movies() {
   const [movies, setMovies] = useState([]);
-
   const [search, setSearch] = useState("");
-
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
-    fetch("https://api.tvmaze.com/shows")
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data);
+    const loadMovies = async () => {
+      try {
+        const response = await fetch(SHOWS_ENDPOINT);
+        if (!response.ok) throw new Error("Unable to load movies right now.");
+        setMovies(await response.json());
+      } catch (loadError) {
+        setError(loadError.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+      }
+    };
+
+    loadMovies();
   }, []);
 
-  const handleSearch = () => {
-    if (search.trim() === "") {
-      setLoading(true);
-
-      fetch("https://api.tvmaze.com/shows")
-        .then((response) => response.json())
-        .then((data) => {
-          setMovies(data);
-          setLoading(false);
-        });
-
-      return;
-    }
-
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    const query = search.trim();
     setLoading(true);
+    setError("");
 
-    fetch(`https://api.tvmaze.com/search/shows?q=${search}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const searchResults = data.map((item) => item.show);
-
-        setMovies(searchResults);
-
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setLoading(false);
-      });
+    try {
+      const endpoint = query
+        ? `https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`
+        : SHOWS_ENDPOINT;
+      const response = await fetch(endpoint);
+      if (!response.ok) throw new Error("Search failed. Please try again.");
+      const data = await response.json();
+      setMovies(query ? data.map((item) => item.show) : data);
+    } catch (searchError) {
+      setError(searchError.message);
+      setMovies([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="movies-section">
       <div className="movies-header">
-        <h1>Explore Movies & Shows</h1>
-
+        <h1>Explore Movies &amp; Shows</h1>
         <p>Discover your favorite movies and TV shows</p>
       </div>
 
-      <div className="search-box">
+      <form className="search-box" onSubmit={handleSearch}>
+        <label className="sr-only" htmlFor="movie-search">
+          Search for a movie or show
+        </label>
         <input
-          type="text"
+          id="movie-search"
+          type="search"
           placeholder="Search for a movie or show..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(event) => setSearch(event.target.value)}
         />
+        <button type="submit">
+          <Search size={18} aria-hidden="true" />
+          <span>Search</span>
+        </button>
+      </form>
 
-        <button onClick={handleSearch}>🔍 Search</button>
-      </div>
-
-      {loading ? (
-        <div className="loading">
+      {loading && (
+        <div className="loading" role="status">
           <p>Loading movies...</p>
         </div>
-      ) : (
+      )}
+
+      {!loading && error && <p className="error-message">{error}</p>}
+
+      {!loading && !error && movies.length === 0 && (
+        <p className="empty-message">No movies found. Try another search.</p>
+      )}
+
+      {!loading && !error && movies.length > 0 && (
         <div className="movie-grid">
           {movies.map((movie) => (
             <MovieCard

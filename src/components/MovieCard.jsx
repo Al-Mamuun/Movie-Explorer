@@ -1,31 +1,37 @@
+import { CalendarDays, Star } from "lucide-react";
+
 function MovieCard({ movie, onDetails }) {
   return (
-    <div className="movie-card">
+    <article className="movie-card">
       <img
         src={
-          movie.image
-            ? movie.image.medium
-            : "https://via.placeholder.com/300x400"
+          movie.image?.medium ||
+          "https://via.placeholder.com/300x400?text=No+Image"
         }
-        alt={movie.name}
+        alt={`${movie.name} poster`}
+        loading="lazy"
       />
 
       <div className="movie-info">
-        <h3>{movie.name}</h3>
+        <h3 title={movie.name}>{movie.name}</h3>
 
-        <div className="movie-meta">
-          <span>⭐ {movie.rating?.average || "N/A"}</span>
+        <div className="movie-meta" aria-label="Movie metadata">
+          <span>
+            <Star size={15} fill="currentColor" aria-hidden="true" />
+            {movie.rating?.average || "N/A"}
+          </span>
 
           <span>
-            📅 {movie.premiered ? movie.premiered.slice(0, 4) : "Unknown"}
+            <CalendarDays size={15} aria-hidden="true" />
+            {movie.premiered ? movie.premiered.slice(0, 4) : "Unknown"}
           </span>
         </div>
 
-        <button className="details-btn" onClick={onDetails}>
+        <button className="details-btn" onClick={onDetails} type="button">
           See Details
         </button>
       </div>
-    </div>
+    </article>
   );
 }
 
