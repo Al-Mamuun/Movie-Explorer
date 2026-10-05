@@ -1,4 +1,4 @@
-import { Film } from "lucide-react";
+
 import { Link } from "react-router-dom";
 
 function Hero() {
